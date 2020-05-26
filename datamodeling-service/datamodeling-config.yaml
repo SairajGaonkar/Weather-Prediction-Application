@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: data-modeling-v0.2
+spec:
+  selector:
+    matchLabels:
+      app: data-modeling
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: data-modeling
+        version: v2
+    spec:
+      containers:
+      - name: data-modeling
+        imagePullPolicy: Always
+        image: sgarandomerror/datamodeling:v0.2
+        ports:
+        - containerPort: 5003
+        volumeMounts:
+        - name: datamodeling-persistent-storage
+          mountPath: /plots
+      volumes:
+         - name: datamodeling-persistent-storage
+           persistentVolumeClaim:
+             claimName: datamodeling-pv-claim
+
